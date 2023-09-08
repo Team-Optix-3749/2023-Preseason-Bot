@@ -6,11 +6,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import 
 
-public class ExampleSubsystem extends SubsystemBase {
+public class tankdrive extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+  public tankdrive() {}
 
   /**
    * Example command factory method.
