@@ -17,7 +17,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class ClawConstants {
-    
+  public static class Claw {
+    public static final int claw_motor_id = 0;
   }
 }
