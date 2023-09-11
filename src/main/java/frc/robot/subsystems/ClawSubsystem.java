@@ -13,7 +13,7 @@ public class ClawSubsystem extends SubsystemBase {
     public ClawSubsystem() {
         clawMotor.restoreFactoryDefaults();
 
-        clawMotor.setInverted(true);
+        clawMotor.setInverted(true); // NOTE: dk if needed
 
         clawEncoder.setPositionConversionFactor(1.0 / 5.0); // TODO: check for value on this
         clawEncoder.setVelocityConversionFactor(1.0 / (60.0 * 5.0)); // TODO: check for value on this
