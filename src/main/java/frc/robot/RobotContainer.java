@@ -7,9 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeReleaseCommand;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -19,6 +23,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final ClawSubsystem clawSubsystem;
+  private final Joystick driverController;
+  
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -28,6 +35,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    clawSubsystem = new ClawSubsystem();
+    driverController = new Joystick(0); // TODO: set for port number
+    
     // Configure the trigger bindings
     configureBindings();
   }
@@ -42,6 +52,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    JoystickButton clawButton = new JoystickButton(driverController, 1); // TODO: set button number
+    clawButton.toggleOnTrue(new IntakeReleaseCommand(clawSubsystem, 0.5)); // TODO: set speed, toggled on true?? should stop when button not pressed right?
+  
+    clawButton.toggleOnTrue(new IntakeReleaseCommand(clawSubsystem, -0.5)); // TODO: set speed, toggled on true?? should stop when button not pressed right?
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
