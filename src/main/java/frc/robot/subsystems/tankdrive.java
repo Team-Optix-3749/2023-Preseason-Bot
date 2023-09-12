@@ -14,9 +14,9 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import java.lang.Math;
-public class tankdrive extends SubsystemBase {
+public class TankDrive extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public tankdrive() {}
+  public TankDrive() {}
 
   public WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.Drivetrain.frontLeftID);
   public WPI_TalonFX frontRight = new WPI_TalonFX(Constants.Drivetrain.frontRightID);
