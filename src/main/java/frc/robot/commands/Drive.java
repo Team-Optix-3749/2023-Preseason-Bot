@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.tankDrive;
+import frc.robot.subsystems.TankDrive;
 
 /** An example command that uses an example subsystem. */
 public class Drive extends CommandBase {
@@ -17,8 +17,8 @@ public class Drive extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public Drive(TankDrive subsystem) {
+    tankDrive = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -26,7 +26,6 @@ public class Drive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    tankDrive = new TankDrive();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
