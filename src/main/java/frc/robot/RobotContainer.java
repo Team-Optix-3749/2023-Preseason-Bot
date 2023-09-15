@@ -52,11 +52,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    JoystickButton clawButton = new JoystickButton(driverController, 1); // TODO: set button number
-    clawButton.toggleOnTrue(new IntakeReleaseCommand(clawSubsystem, 0.5)); // TODO: set speed, toggled on true?? should stop when button not pressed right?
-  
-    clawButton.toggleOnTrue(new IntakeReleaseCommand(clawSubsystem, -0.5)); // TODO: set speed, toggled on true?? should stop when button not pressed right?
-
+    m_driverController.rightBumper().whileTrue(new IntakeReleaseCommand(clawSubsystem, 0.5));
+    m_driverController.leftBumper().whileTrue(new IntakeReleaseCommand(clawSubsystem, -0.5));
+    
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
