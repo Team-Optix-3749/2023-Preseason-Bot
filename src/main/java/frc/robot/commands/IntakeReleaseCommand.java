@@ -15,12 +15,12 @@ public class IntakeReleaseCommand extends CommandBase{
     }
 
     @Override
-    public void initialize() {
-        clawSubsystem.setClawMotor(speed);
-    }
+    public void initialize() {}
 
     @Override
-    public void execute() {}
+    public void execute() {
+        clawSubsystem.setClawMotor(speed);
+    }
 
     @Override
     public void end(boolean interrupted) {
