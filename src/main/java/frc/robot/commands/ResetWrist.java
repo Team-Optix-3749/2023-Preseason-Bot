@@ -7,7 +7,7 @@ public class ResetWrist extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final WristSubsystem wristSubsystem;
 
-    public ResetWrist(WristSubsystem subsystem, double angle) {
+    public ResetWrist(WristSubsystem subsystem) {
         this.wristSubsystem = subsystem;
         addRequirements(wristSubsystem);
     }
