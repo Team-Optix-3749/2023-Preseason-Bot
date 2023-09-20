@@ -4,8 +4,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.WristPeriodicCommand;
 
 public class WristSubsystem extends SubsystemBase {
     private final CANSparkMax wristMotor = new CANSparkMax(Constants.Claw.claw_motor_id, CANSparkMax.MotorType.kBrushless);
@@ -24,6 +26,11 @@ public class WristSubsystem extends SubsystemBase {
 
 
         wristMotor.setSmartCurrentLimit(40); // TODO: check for optimal value on this
+
+        // Schedule the periodic command to run continuously
+        // NOTE: Idk if this is the right way to do periodic so hopefully it is
+        CommandScheduler.getInstance().registerSubsystem(this);
+        CommandScheduler.getInstance().schedule(new WristPeriodicCommand(this));
     }
 
     // angle is rotation in radians
