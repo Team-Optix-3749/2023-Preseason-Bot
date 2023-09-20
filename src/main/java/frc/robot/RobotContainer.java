@@ -7,13 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.IntakeReleaseCommand;
-import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.commands.ResetWrist;
+import frc.robot.commands.RotateWrist;
+import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -23,8 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final ClawSubsystem clawSubsystem;
-  private final Joystick driverController;
+  private final WristSubsystem wristSubsystem;
   
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -35,8 +34,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    clawSubsystem = new ClawSubsystem();
-    driverController = new Joystick(0); // TODO: set for port number
+    wristSubsystem = new WristSubsystem();
     
     // Configure the trigger bindings
     configureBindings();
@@ -52,8 +50,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightBumper().whileTrue(new IntakeReleaseCommand(clawSubsystem, 0.5));
-    m_driverController.leftBumper().whileTrue(new IntakeReleaseCommand(clawSubsystem, -0.5));
+    // TODO: set appropriate angles for wrist movement
+    m_driverController.rightBumper().whileTrue(new RotateWrist(wristSubsystem, 5));
+    m_driverController.leftBumper().whileTrue(new RotateWrist(wristSubsystem, -5));
+
+    m_driverController.a().whileTrue(new ResetWrist(wristSubsystem));
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
