@@ -14,11 +14,14 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import java.lang.Math;
-public class tankdrive extends SubsystemBase {
+public class TankDrive extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public tankdrive() {}
+//   public tankdrive() {}
 
-  public WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.Drivetrain.frontLeftID);
+//   public tankdrive(tankdrive drivetrain, Object object, Object object2) {
+// }
+
+public WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.Drivetrain.frontLeftID);
   public WPI_TalonFX frontRight = new WPI_TalonFX(Constants.Drivetrain.frontRightID);
 
   public WPI_TalonFX backLeft = new WPI_TalonFX(Constants.Drivetrain.backLeftID);
@@ -51,4 +54,8 @@ public class tankdrive extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+
+// public void setDefaultCommand(DrivetrainCommnd drivetrainCommnd) {
+// }
 }
