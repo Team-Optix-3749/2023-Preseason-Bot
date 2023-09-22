@@ -7,7 +7,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.WristPeriodicCommand;
 
 public class WristSubsystem extends SubsystemBase {
     private final CANSparkMax wristMotor = new CANSparkMax(Constants.Claw.claw_motor_id, CANSparkMax.MotorType.kBrushless);
@@ -29,8 +28,8 @@ public class WristSubsystem extends SubsystemBase {
 
         // Schedule the periodic command to run continuously
         // NOTE: Idk if this is the right way to do periodic so hopefully it is
-        CommandScheduler.getInstance().registerSubsystem(this);
-        CommandScheduler.getInstance().schedule(new WristPeriodicCommand(this));
+        // CommandScheduler.getInstance().registerSubsystem(this);
+        // CommandScheduler.getInstance().schedule(new WristPeriodicCommand(this));
     }
 
     // angle is rotation in radians
@@ -65,5 +64,11 @@ public class WristSubsystem extends SubsystemBase {
 
     public void stop() {
         wristMotor.stopMotor();
+    }
+
+    @Override
+    public void periodic() {
+      
+        setWristMotor();
     }
 }
