@@ -40,4 +40,9 @@ public class ClawSubsystem extends SubsystemBase {
     public void stop() {
         clawMotor.stopMotor();
     }
+    
+    @Override
+    public void periodic(){
+
+    }
 }

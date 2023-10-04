@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final ClawSubsystem clawSubsystem;
-  private final Joystick driverController;
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  private final Joystick driverController = new Joystick(0);
   
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -34,10 +34,7 @@ public class RobotContainer {
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    clawSubsystem = new ClawSubsystem();
-    driverController = new Joystick(0); // TODO: set for port number
-    
+  public RobotContainer() {    
     // Configure the trigger bindings
     configureBindings();
   }
