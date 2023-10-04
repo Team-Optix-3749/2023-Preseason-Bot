@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final WristSubsystem wristSubsystem;
+  private final WristSubsystem wristSubsystem = new WristSubsystem();
   
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -34,7 +34,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    wristSubsystem = new WristSubsystem();
     
     // Configure the trigger bindings
     configureBindings();
