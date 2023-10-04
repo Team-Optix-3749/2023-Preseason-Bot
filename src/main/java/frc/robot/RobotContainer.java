@@ -10,7 +10,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class RobotContainer {
 
+    private final XboxController pilot = new XboxController(Constants.XboxConstants.kDriverControllerPortPilot);
+
     private final TankDrive drivetrain = new TankDrive();
+    private final Drive driveCommand = new Drive(drivetrain, pilot::getLeftY, pilot::getRightX);
      // 0 is the USB Port to be used as indicated on the Driver Station
     // private final Elevator m_elevator = new Elevator();
 
@@ -19,9 +22,8 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      XboxController pilot = new XboxController(Constants.XboxConstants.kDriverControllerPortPilot);
 
-      drivetrain.setDefaultCommand(new Drive(drivetrain, pilot::getLeftY, pilot::getRightX));
+      drivetrain.setDefaultCommand(driveCommand);
 
         // m_intake.setDefaultCommand(
         //     new Input(m_intake, Pilot::getLeftTrigger, Pilot::getRightTrigger));
