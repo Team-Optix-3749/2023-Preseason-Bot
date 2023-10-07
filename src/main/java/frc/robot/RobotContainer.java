@@ -55,6 +55,12 @@ public class RobotContainer {
     m_driverController.rightBumper().onTrue(Commands.runOnce(() -> wristSubsystem.adjustWristAngle(5), wristSubsystem));
     m_driverController.x().onTrue(Commands.runOnce(() -> wristSubsystem.resetWristAngle(), wristSubsystem));
 
+    m_driverController.a().onTrue(Commands.runOnce(() -> wristSubsystem.setSpeed(0), wristSubsystem));
+    m_driverController.b().onTrue(Commands.runOnce(() ->  wristSubsystem.setSpeed(0.1), wristSubsystem));
+    m_driverController.x().onTrue(Commands.runOnce(() ->  wristSubsystem.setSpeed(-0.1), wristSubsystem));
+
+
+
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
