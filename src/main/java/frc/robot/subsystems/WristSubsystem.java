@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,18 +15,12 @@ public class WristSubsystem extends SubsystemBase {
     private PIDController wristController = new PIDController(1, 0,0 );
 
     private double desiredWristAngle = 0; // something to set wrist angle
+    private double speed = 0;
     
     public WristSubsystem() {
         wristMotor.restoreFactoryDefaults();
 
         wristMotor.setInverted(true); // NOTE: dk if needed
-
-        wristEncoder.setPositionConversionFactor(1/15 * 56/45 * 32/15);
-
-        
-
-        // wristEncoder.setPositionConversionFactor(1.0 / 5.0); // TODO: check for value on this
-        // wristEncoder.setVelocityConversionFactor(1.0 / (60.0 * 5.0)); // TODO: check for value on this
 
 
         wristMotor.setSmartCurrentLimit(40); // TODO: check for optimal value on this
@@ -39,7 +34,8 @@ public class WristSubsystem extends SubsystemBase {
     // angle is rotation in radians
     public void setWristMotor() {
 
-        double voltage = wristController.calculate(wristEncoder.getPosition(), desiredWristAngle);
+        double voltage = wristController.calculate(getWristAngle(), desiredWristAngle);
+        voltage = speed;
         wristMotor.set(voltage);
     }
 
@@ -48,7 +44,7 @@ public class WristSubsystem extends SubsystemBase {
     }
 
     public double getWristAngle() {
-        return (wristEncoder.getPosition() * 360); // TODO: find out how to get value for this
+        return (wristEncoder.getPosition() * 1/15 * 45/56 * 15/32* 360); // TODO: find out how to get value for this
     }
 
     public void adjustWristAngle(double angle) {
@@ -70,9 +66,13 @@ public class WristSubsystem extends SubsystemBase {
         wristMotor.stopMotor();
     }
 
+    public void setSpeed(double speed){
+        this.speed = speed;
+    }
+
     @Override
     public void periodic() {
-      
+        SmartDashboard.putNumber("Encoder Value",getWristAngle());
         setWristMotor();
     }
 }

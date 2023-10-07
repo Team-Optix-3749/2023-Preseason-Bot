@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final WristSubsystem wristSubsystem;
+  private final WristSubsystem wristSubsystem = new WristSubsystem();
   
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -34,7 +34,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    wristSubsystem = new WristSubsystem();
     
     // Configure the trigger bindings
     configureBindings();
@@ -55,6 +54,12 @@ public class RobotContainer {
     m_driverController.leftBumper().onTrue(Commands.runOnce(() -> wristSubsystem.adjustWristAngle(-5), wristSubsystem));
     m_driverController.rightBumper().onTrue(Commands.runOnce(() -> wristSubsystem.adjustWristAngle(5), wristSubsystem));
     m_driverController.x().onTrue(Commands.runOnce(() -> wristSubsystem.resetWristAngle(), wristSubsystem));
+
+    m_driverController.a().onTrue(Commands.runOnce(() -> wristSubsystem.setSpeed(0), wristSubsystem));
+    m_driverController.b().onTrue(Commands.runOnce(() ->  wristSubsystem.setSpeed(0.1), wristSubsystem));
+    m_driverController.x().onTrue(Commands.runOnce(() ->  wristSubsystem.setSpeed(-0.1), wristSubsystem));
+
+
 
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

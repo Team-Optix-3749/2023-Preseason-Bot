@@ -18,6 +18,6 @@ public final class Constants {
   }
 
   public static class Claw {
-    public static final int claw_motor_id = 0;
+    public static final int claw_motor_id = 8;
   }
 }
