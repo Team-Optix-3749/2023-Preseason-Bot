@@ -20,8 +20,12 @@ public class WristSubsystem extends SubsystemBase {
 
         wristMotor.setInverted(true); // NOTE: dk if needed
 
-        wristEncoder.setPositionConversionFactor(1.0 / 5.0); // TODO: check for value on this
-        wristEncoder.setVelocityConversionFactor(1.0 / (60.0 * 5.0)); // TODO: check for value on this
+        wristEncoder.setPositionConversionFactor(1/15 * 56/45 * 32/15);
+
+        
+
+        // wristEncoder.setPositionConversionFactor(1.0 / 5.0); // TODO: check for value on this
+        // wristEncoder.setVelocityConversionFactor(1.0 / (60.0 * 5.0)); // TODO: check for value on this
 
 
         wristMotor.setSmartCurrentLimit(40); // TODO: check for optimal value on this
