@@ -9,10 +9,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -51,17 +49,10 @@ public class RobotContainer {
   private void configureBindings() {
     // TODO: set appropriate angles for wrist movement
 
-    m_driverController.leftBumper().onTrue(Commands.runOnce(() -> wristSubsystem.adjustWristAngle(-5), wristSubsystem));
-    m_driverController.rightBumper().onTrue(Commands.runOnce(() -> wristSubsystem.adjustWristAngle(5), wristSubsystem));
-    m_driverController.x().onTrue(Commands.runOnce(() -> wristSubsystem.resetWristAngle(), wristSubsystem));
+    m_driverController.a().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW), wristSubsystem));
+    m_driverController.b().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING), wristSubsystem));
+    m_driverController.x().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING), wristSubsystem));
 
-    m_driverController.a().onTrue(Commands.runOnce(() -> wristSubsystem.setSpeed(0), wristSubsystem));
-    m_driverController.b().onTrue(Commands.runOnce(() ->  wristSubsystem.setSpeed(0.1), wristSubsystem));
-    m_driverController.x().onTrue(Commands.runOnce(() ->  wristSubsystem.setSpeed(-0.1), wristSubsystem));
-
-
-
-    
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));

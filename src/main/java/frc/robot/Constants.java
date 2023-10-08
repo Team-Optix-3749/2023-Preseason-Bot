@@ -17,7 +17,24 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class Claw {
-    public static final int claw_motor_id = 8;
+  public static class Wrist
+  {
+    public static final int wristMotor = 7;
+  }
+
+  public static enum Setpoints {
+    // Setpoint(ElevatorExtension, WristAngle)
+
+    STOW(1, 0),
+    MID_SCORING(32, -120),
+    TOP_SCORING(42, -90);
+
+    public double eleveatorExtension;
+    public double wristAngle;
+
+    Setpoints(double elevatorExtension, double wristAngle){
+      this.eleveatorExtension = elevatorExtension;
+      this.wristAngle = wristAngle;
+    }
   }
 }
