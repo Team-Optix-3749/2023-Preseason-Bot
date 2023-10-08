@@ -21,4 +21,22 @@ public final class Constants {
     public static final int elevatorMotorOne = 5;
     public static final int elevatorMotorTwo = 6;
   }
+
+  public static enum Setpoints {
+    // Setpoint(ElevatorExtension, WristAngle)
+
+    STOW(1, 0),
+    MID_SCORING(32, -120),
+    TOP_SCORING(42, -90);
+
+    public double eleveatorExtension;
+    public double wristAngle;
+
+    Setpoints(double elevatorExtension, double wristAngle){
+      this.eleveatorExtension = elevatorExtension;
+      this.wristAngle = wristAngle;
+    }
+
+    // STOW()
+  }
 }

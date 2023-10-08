@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -19,21 +20,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
-
-  
   /** Creates a new ExampleSubsystem. */
-  
-
 
   private final CANSparkMax motorOne = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorOne, MotorType.kBrushless);
   private final CANSparkMax motorTwo = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorTwo, MotorType.kBrushless);
   private final RelativeEncoder motorOneEncoder = motorOne.getEncoder(); // TODO: check if absolute encoder??
   private final RelativeEncoder motorTwoEncoder = motorTwo.getEncoder(); // TODO: check if absolute encoder??
 
-  private final PIDController elevatorController = new PIDController(1,0,0);
+  private final PIDController elevatorController = new PIDController(0,0,0);
+  private final SimpleMotorFeedforward elevatorFeedForward = new SimpleMotorFeedforward(0,0,0);
 
-  private double setpointPercentage = 0; 
-
+  private Constants.Setpoints currentSetpoint = Constants.Setpoints.STOW;
 
   public Elevator() 
   {
@@ -74,12 +71,6 @@ public class Elevator extends SubsystemBase {
     return false;
   }
 
-
-
-  public void setElevatorPercent(double percent){
-    setpointPercentage = percent;
-  }
-
   public void stop()
   {
     motorOne.set(0);
@@ -88,28 +79,25 @@ public class Elevator extends SubsystemBase {
 
   public void setVoltage(double volts)
   {
-    if (getElevatorPositionInches() < 0.15 && volts <0){
-      volts = 0;
-    }
-    else if (getElevatorPositionInches() > 42 && volts > 0){
-      volts = 0;
-    }
+
     SmartDashboard.putNumber("Elevator Voltage", volts);
     motorOne.setVoltage(volts);
     motorTwo.setVoltage(volts);;
   }
 
-  public double getEncoderValue()
-  {
-    return motorOneEncoder.getPosition();
-  }
-
   public void runElevator(){
-
     double voltage = 0;
-    voltage = elevatorController.calculate(getEncoderValue(), setpointPercentage);
-    // setVoltage(voltage);
+    voltage = elevatorController.calculate(getElevatorPositionInches(), currentSetpoint.eleveatorExtension);
 
+    if (getElevatorPositionInches() < 0.15 && voltage <0){
+      voltage = 0;
+    }
+    else if (getElevatorPositionInches() > 42 && voltage > 0){
+      voltage = 0;
+    }
+    
+    voltage += elevatorFeedForward.calculate(0);
+    setVoltage(voltage);
 
   }
 
@@ -118,9 +106,14 @@ public class Elevator extends SubsystemBase {
     return ((motorOneEncoder.getPosition()+motorTwoEncoder.getPosition())/2 * 1/58 *42.5);
   }
 
+  public void setSetpoint(Constants.Setpoints setpoint){
+    currentSetpoint = setpoint;
+  }
+
   @Override
   public void periodic() {
-    
+    runElevator();
+
 
     SmartDashboard.putNumber("Motor 5 Bus Voltage", motorOne.getBusVoltage());
     SmartDashboard.putNumber("Motor 6 Bus Voltage", motorTwo.getBusVoltage());
@@ -129,14 +122,6 @@ public class Elevator extends SubsystemBase {
 
     SmartDashboard.putNumber("Elevator Position", getElevatorPositionInches());
 
-    // SmartDashboard.putNumber("Motor 5 Current", motorOne.getBusVoltage()*motorOne.getAppliedOutput());
-    // SmartDashboard.putNumber("Motor 6 Current", motorTwo.getBusVoltage()*motorTwo.getAppliedOutput());
-
-    // SmartDashboard.putNumber("Motor5 Current", motorOne.);
-
-    // This method will be called once per scheduler run
-
-    // runElevator();
   }
 
   @Override
