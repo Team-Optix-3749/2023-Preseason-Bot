@@ -8,14 +8,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Setpoints;
 
 public class WristSubsystem extends SubsystemBase {
     private final CANSparkMax wristMotor = new CANSparkMax(Constants.Claw.claw_motor_id, CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder(); // TODO: check if absolute encoder??
-    private PIDController wristController = new PIDController(1, 0,0 );
+    private PIDController wristController = new PIDController(0, 0,0 );
 
     private double desiredWristAngle = 0; // something to set wrist angle
     private double speed = 0;
+
+    private Setpoints currentsetpoint = Setpoints.STOW;
     
     public WristSubsystem() {
         wristMotor.restoreFactoryDefaults();
