@@ -18,11 +18,11 @@ public final class Constants {
     public static final int kDriverControllerPortOperator = 1;
   }
   public static class Drivetrain{
-    public static final int frontLeftID = 0;
-    public static final int frontRightID = 0;
+    public static final int frontLeftID = 1;
+    public static final int frontRightID = 3;
   
-    public static final int backLeftID = 0;
-    public static final int backRightID = 0;
+    public static final int backLeftID = 2;
+    public static final int backRightID = 4;
 
     public static final double speedScalar = 2.0/3.0;
   

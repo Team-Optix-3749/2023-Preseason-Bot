@@ -5,6 +5,7 @@ import frc.robot.subsystems.*;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -28,7 +29,10 @@ public class Drive extends CommandBase {
 
     @Override
     public void execute() {
-        drive.arcadeDrive(y.getAsDouble() * Constants.Drivetrain.speedScalar, x.getAsDouble()*Constants.Drivetrain.speedScalar);
+        SmartDashboard.putNumber("Y", y.getAsDouble());
+        SmartDashboard.putNumber("X", x.getAsDouble());
+
+        drive.arcadeDrive( x.getAsDouble()*Constants.Drivetrain.speedScalar, -y.getAsDouble() * Constants.Drivetrain.speedScalar);
     }
 
     @Override
