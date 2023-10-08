@@ -36,7 +36,9 @@ public final class Constants {
       this.eleveatorExtension = elevatorExtension;
       this.wristAngle = wristAngle;
     }
+  }
 
-    // STOW()
+  public static enum Setpoints {
+    
   }
 }
