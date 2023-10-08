@@ -9,8 +9,10 @@ import java.io.PipedInputStream;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,9 +37,18 @@ public class Elevator extends SubsystemBase {
 
   public Elevator() 
   {
-    motorOne.setInverted(true);
+    motorTwo.setInverted(true);
     // gear ratio  * 1 / circumfrance rotarty bar * 1 / total length elevator
-    motorOneEncoder.setPositionConversionFactor(1);
+    // motorOneEncoder.setPositionConversionFactor(1/225);
+    motorTwoEncoder.setPositionConversionFactor(1/225);
+
+    motorOne.setSmartCurrentLimit(60);
+    motorTwo.setSmartCurrentLimit(60);
+
+
+    motorOne.setIdleMode(IdleMode.kCoast);
+    motorTwo.setIdleMode(IdleMode.kCoast);
+
   }
   /**
    * Example command factory method.
@@ -64,6 +75,7 @@ public class Elevator extends SubsystemBase {
   }
 
 
+
   public void setElevatorPercent(double percent){
     setpointPercentage = percent;
   }
@@ -76,6 +88,13 @@ public class Elevator extends SubsystemBase {
 
   public void setVoltage(double volts)
   {
+    if (getElevatorPositionInches() < 0.15 && volts <0){
+      volts = 0;
+    }
+    else if (getElevatorPositionInches() > 42 && volts > 0){
+      volts = 0;
+    }
+    SmartDashboard.putNumber("Elevator Voltage", volts);
     motorOne.setVoltage(volts);
     motorTwo.setVoltage(volts);;
   }
@@ -89,15 +108,35 @@ public class Elevator extends SubsystemBase {
 
     double voltage = 0;
     voltage = elevatorController.calculate(getEncoderValue(), setpointPercentage);
-    setVoltage(voltage);
+    // setVoltage(voltage);
 
+
+  }
+
+  // Average of the two encoders * 1/58 (the raw reading at max extension) * 42.5 (the max extenstion in inches)
+  public double getElevatorPositionInches(){
+    return ((motorOneEncoder.getPosition()+motorTwoEncoder.getPosition())/2 * 1/58 *42.5);
   }
 
   @Override
   public void periodic() {
+    
+
+    SmartDashboard.putNumber("Motor 5 Bus Voltage", motorOne.getBusVoltage());
+    SmartDashboard.putNumber("Motor 6 Bus Voltage", motorTwo.getBusVoltage());
+    SmartDashboard.putNumber("Motor 5 Current", motorOne.getOutputCurrent());
+    SmartDashboard.putNumber("Motor 6 Current", motorTwo.getOutputCurrent());
+
+    SmartDashboard.putNumber("Elevator Position", getElevatorPositionInches());
+
+    // SmartDashboard.putNumber("Motor 5 Current", motorOne.getBusVoltage()*motorOne.getAppliedOutput());
+    // SmartDashboard.putNumber("Motor 6 Current", motorTwo.getBusVoltage()*motorTwo.getAppliedOutput());
+
+    // SmartDashboard.putNumber("Motor5 Current", motorOne.);
+
     // This method will be called once per scheduler run
 
-    runElevator();
+    // runElevator();
   }
 
   @Override

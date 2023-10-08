@@ -18,7 +18,7 @@ public final class Constants {
   }
   public static class ElevatorConstants
   {
-    public static final int elevatorMotorOne = 0;
-    public static final int elevatorMotorTwo = 1;
+    public static final int elevatorMotorOne = 5;
+    public static final int elevatorMotorTwo = 6;
   }
 }
