@@ -48,10 +48,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightTrigger().whileTrue(Commands.run(()->intake.setIntakeMotorVoltage(Constants.Intake.intakeVelocity)));
-    m_driverController.leftTrigger().whileTrue(Commands.run(()->intake.setIntakeMotorVoltage(Constants.Intake.outtakeVelocity)));
-    
-    
+    m_driverController.rightTrigger().onTrue(Commands.run(()->intake.setIntakeVoltage(Constants.Intake.intakeVelocity)));
+    m_driverController.leftTrigger().onTrue(Commands.run(()->intake.setIntakeVoltage(Constants.Intake.outtakeVelocity)));
+    m_driverController.leftTrigger().onFalse(Commands.runOnce(()->intake.setIntakeVoltage(Constants.Intake.idleVelocity)));
+    m_driverController.rightTrigger().onFalse(Commands.runOnce(()->intake.setIntakeVoltage(Constants.Intake.idleVelocity)));
+
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)

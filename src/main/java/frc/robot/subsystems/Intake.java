@@ -14,7 +14,7 @@ public class Intake extends SubsystemBase {
     private final PIDController intakeController = new PIDController(0, 0, 0);
     private final SimpleMotorFeedforward intakeFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
-    private boolean isIntakeIdle = false;
+    private double intakeMotorVelocity = Constants.Intake.idleVelocity;
     
     public Intake() {
         intakeMotor.restoreFactoryDefaults();
@@ -27,7 +27,6 @@ public class Intake extends SubsystemBase {
         intakeMotor.setSmartCurrentLimit(40);
     }
 
-    // speed is rot/s
     public void setIntakeMotorVoltage(double velocity) {
 
         double voltage = intakeController.calculate(intakeEncoder.getVelocity(), velocity);
@@ -35,8 +34,13 @@ public class Intake extends SubsystemBase {
         intakeMotor.setVoltage(voltage);
 
     }
+
+    public void setIntakeVoltage(double velocity) { // get better name
+        this.intakeMotorVelocity = velocity;
+    }
     
     @Override
     public void periodic(){
+        setIntakeMotorVoltage(intakeMotorVelocity);
     }
 }
