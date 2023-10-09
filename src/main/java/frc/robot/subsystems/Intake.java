@@ -4,13 +4,17 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
     private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Intake.intakeMotor, CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
-    private PIDController intakeController = new PIDController(0, 0, 0);
+    private final PIDController intakeController = new PIDController(0, 0, 0);
+    private final SimpleMotorFeedforward intakeFeedforward = new SimpleMotorFeedforward(0, 0, 0);
+
+    private boolean isIntakeIdle = false;
     
     public Intake() {
         intakeMotor.restoreFactoryDefaults();
@@ -27,12 +31,12 @@ public class Intake extends SubsystemBase {
     public void setIntakeMotorVoltage(double velocity) {
 
         double voltage = intakeController.calculate(intakeEncoder.getVelocity(), velocity);
-        // TODO: Feed Forward here
-        intakeMotor.set(voltage);
+        voltage += intakeFeedforward.calculate(velocity);
+        intakeMotor.setVoltage(voltage);
+
     }
     
     @Override
     public void periodic(){
-        setIntakeMotorVoltage(Constants.Intake.idleVelocity);
     }
 }

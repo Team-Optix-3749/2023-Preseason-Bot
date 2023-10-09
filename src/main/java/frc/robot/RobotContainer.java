@@ -51,6 +51,8 @@ public class RobotContainer {
     m_driverController.rightTrigger().whileTrue(Commands.run(()->intake.setIntakeMotorVoltage(Constants.Intake.intakeVelocity)));
     m_driverController.leftTrigger().whileTrue(Commands.run(()->intake.setIntakeMotorVoltage(Constants.Intake.outtakeVelocity)));
     
+    
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
