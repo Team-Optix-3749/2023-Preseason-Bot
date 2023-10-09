@@ -8,7 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeReleaseCommand;
-import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  private final Intake intake = new Intake();
   private final Joystick driverController = new Joystick(0);
   
   // The robot's subsystems and commands are defined here...
@@ -49,8 +49,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightBumper().whileTrue(new IntakeReleaseCommand(clawSubsystem, 0.5));
-    m_driverController.leftBumper().whileTrue(new IntakeReleaseCommand(clawSubsystem, -0.5));
+    m_driverController.rightTrigger().whileTrue();
+    m_driverController.leftTrigger().whileTrue();
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
