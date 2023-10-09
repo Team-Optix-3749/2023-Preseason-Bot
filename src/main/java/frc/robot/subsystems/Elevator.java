@@ -36,11 +36,12 @@ public class Elevator extends SubsystemBase {
   private final DoubleSupplier wristAngleSupplier;
   // feed forward constants
   private final double ks = 0.3;
-  private final double kg = 0.25;
+  private final double kg = 0.065;
   // extension
-  private final double ke = 0.01;
+  private final double ke = -0.2;
+  // private final double cgOutLengthInches = 
   // wrist rotation
-  private final double kr = 0;
+  private final double kr = -.1;
 
 
 
@@ -88,8 +89,8 @@ public class Elevator extends SubsystemBase {
     } else if (getElevatorPositionInches() > 42 && voltage > 0) {
       voltage = 0;
     }
+    voltage += ffcalculate(1);
 
-    // voltage += elevatorFeedForward.calculate(1);
     SmartDashboard.putNumber("Elevator Voltage", voltage);
     setVoltage(voltage);
 
@@ -105,13 +106,20 @@ public class Elevator extends SubsystemBase {
     currentSetpoint = setpoint;
   }
 
-  public void ffcalculate(double velocity){
+  public double ffcalculate(double velocity){
     double total = 0;
     total += ks * Math.signum(velocity);
     total += kg;
-    total += ke * getElevatorPositionInches();
-    total += kr * Math.cos(wristAngleSupplier.getAsDouble());
-    
+    total += kr * Math.sin(wristAngleSupplier.getAsDouble()/180 * Math.PI);
+
+    // BS center of mass constant forcespring torque crap
+    if (getElevatorPositionInches()>4 && getElevatorPositionInches()<10){
+      total+=ke;
+    }
+    if (getElevatorPositionInches()>10 ){
+      total+=ke/2;
+    }
+    return total;
   }
 
   @Override
