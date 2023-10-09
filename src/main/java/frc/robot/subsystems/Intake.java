@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-    private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Claw.claw_motor_id, CANSparkMax.MotorType.kBrushless);
+    private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Intake.intakeMotor, CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
-    private PIDController intakeController = new PIDController(1, 0,0 );
+    private PIDController intakeController = new PIDController(0, 0, 0);
     
     public Intake() {
         intakeMotor.restoreFactoryDefaults();
@@ -20,27 +20,19 @@ public class Intake extends SubsystemBase {
         intakeEncoder.setPositionConversionFactor(1.0 / 5.0); // TODO: check for value on this
         intakeEncoder.setVelocityConversionFactor(1.0 / (60.0 * 5.0)); // TODO: check for value on this
 
-
         intakeMotor.setSmartCurrentLimit(40);
     }
 
     // speed is rot/s
-    public void setIntakeMotor(double speed) {
+    public void setIntakeMotorVoltage(double velocity) {
 
-        double voltage = intakeController.calculate(intakeEncoder.getVelocity(), speed);
+        double voltage = intakeController.calculate(intakeEncoder.getVelocity(), velocity);
+        // TODO: Feed Forward here
         intakeMotor.set(voltage);
-    }
-
-    public double getClawMotorSpeed() {
-        return intakeMotor.get();
-    }
-
-    public void stop() {
-        intakeMotor.stopMotor();
     }
     
     @Override
     public void periodic(){
-
+        setIntakeMotorVoltage(Constants.Intake.idleVelocity);
     }
 }
