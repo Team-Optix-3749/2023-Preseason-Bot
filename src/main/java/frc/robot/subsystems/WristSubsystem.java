@@ -4,76 +4,44 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class WristSubsystem extends SubsystemBase {
-    private final CANSparkMax wristMotor = new CANSparkMax(Constants.Claw.claw_motor_id, CANSparkMax.MotorType.kBrushless);
-    private final RelativeEncoder wristEncoder = wristMotor.getEncoder(); // TODO: check if absolute encoder??
-    private PIDController wristController = new PIDController(1, 0,0 );
+    private final CANSparkMax wristMotor = new CANSparkMax(Constants.Wrist.wristMotor, CANSparkMax.MotorType.kBrushless);
+    private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
+    private final PIDController wristController = new PIDController(0, 0,0 );
+    private final double ks = 0;
 
-    private double desiredWristAngle = 0; // something to set wrist angle
-    private double speed = 0;
+    private Constants.Setpoints currentSetpoint = Constants.Setpoints.STOW;
     
     public WristSubsystem() {
         wristMotor.restoreFactoryDefaults();
-
-        wristMotor.setInverted(true); // NOTE: dk if needed
-
-
-        wristMotor.setSmartCurrentLimit(40); // TODO: check for optimal value on this
-
-        // Schedule the periodic command to run continuously
-        // NOTE: Idk if this is the right way to do periodic so hopefully it is
-        // CommandScheduler.getInstance().registerSubsystem(this);
-        // CommandScheduler.getInstance().schedule(new WristPeriodicCommand(this));
+        wristMotor.setSmartCurrentLimit(40);
     }
 
     // angle is rotation in radians
-    public void setWristMotor() {
+    public void setWristMotorVoltage() {
 
-        double voltage = wristController.calculate(getWristAngle(), desiredWristAngle);
-        voltage = speed;
+        double voltage = wristController.calculate(getWristAngle(), currentSetpoint.wristAngle);
+        voltage += ks * Math.cos(getWristAngle());
         wristMotor.set(voltage);
+
     }
 
-    public double getWristMotorSpeed() {
-        return wristMotor.get();
+    public void setSetpoint(Constants.Setpoints setpoint) {
+        currentSetpoint = setpoint;
     }
 
     public double getWristAngle() {
-        return (wristEncoder.getPosition() * 1/15 * 45/56 * 15/32* 360); // TODO: find out how to get value for this
-    
-    }
-
-    public void adjustWristAngle(double angle) {
-        double newAngle = desiredWristAngle + angle;
-        if (newAngle >= 90){ // TODO: find limit here
-            desiredWristAngle = 90;
-        } else if (newAngle <= -90) {
-            desiredWristAngle = -90;
-        } else {
-            desiredWristAngle = newAngle;
-        }
-    }
-
-    public double resetWristAngle() {
-        return desiredWristAngle = 0;
-    }
-
-    public void stop() {
-        wristMotor.stopMotor();
-    }
-
-    public void setSpeed(double speed){
-        this.speed = speed;
+        return (wristEncoder.getPosition() * 1/15 * 45/56 * 15/32* 360);
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Encoder Value",getWristAngle());
-        setWristMotor();
+        // setWristMotorVoltage();
     }
 }

@@ -21,16 +21,22 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class ElevatorConstants {
-    public static final int elevatorMotorOne = 5;
-    public static final int elevatorMotorTwo = 6;
+  public static class Wrist
+  {
+    public static final int wristMotor = 7;
+  }
+
+  public static class Elevator{
+    public static final int elevatorMotorOneID = 5;
+    public static final int elevatorMotorTwoID = 6;
+
   }
 
   public static enum Setpoints {
     // Setpoint(ElevatorExtension, WristAngle)
 
     STOW(1, 0),
-    MID_SCORING(22, -120),
+    MID_SCORING(32, -120),
     TOP_SCORING(42, -90);
 
     public double eleveatorExtension;

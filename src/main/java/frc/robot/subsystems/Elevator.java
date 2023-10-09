@@ -24,9 +24,9 @@ import frc.robot.Constants;
 public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  private final CANSparkMax motorOne = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorOne,
+  private final CANSparkMax motorOne = new CANSparkMax(Constants.Elevator.elevatorMotorOneID,
       MotorType.kBrushless);
-  private final CANSparkMax motorTwo = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorTwo,
+  private final CANSparkMax motorTwo = new CANSparkMax(Constants.Elevator.elevatorMotorTwoID,
       MotorType.kBrushless);
   private final RelativeEncoder motorOneEncoder = motorOne.getEncoder();
   private final RelativeEncoder motorTwoEncoder = motorTwo.getEncoder();
