@@ -50,9 +50,9 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    m_driverController.a().onTrue(Commands.run(()->Elevator.setSetpoint(Constants.Setpoints.STOW)));
-    m_driverController.b().onTrue(Commands.run(()->Elevator.setSetpoint(Constants.Setpoints.MID_SCORING)));
-    m_driverController.x().onTrue(Commands.run(()->Elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)));
+    m_driverController.a().onTrue(Commands.runOnce(()->Elevator.setSetpoint(Constants.Setpoints.STOW)));
+    m_driverController.b().onTrue(Commands.runOnce(()->Elevator.setSetpoint(Constants.Setpoints.MID_SCORING)));
+    m_driverController.x().onTrue(Commands.runOnce(()->Elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.

@@ -27,8 +27,9 @@ public class Elevator extends SubsystemBase {
   private final RelativeEncoder motorOneEncoder = motorOne.getEncoder(); // TODO: check if absolute encoder??
   private final RelativeEncoder motorTwoEncoder = motorTwo.getEncoder(); // TODO: check if absolute encoder??
 
-  private final PIDController elevatorController = new PIDController(0,0,0);
-  private final SimpleMotorFeedforward elevatorFeedForward = new SimpleMotorFeedforward(0,0,0);
+  private final PIDController elevatorController = new PIDController(0.3,0,0);
+
+  private final SimpleMotorFeedforward elevatorFeedForward = new SimpleMotorFeedforward(0.3,0,0);
 
   private Constants.Setpoints currentSetpoint = Constants.Setpoints.STOW;
 
@@ -45,6 +46,7 @@ public class Elevator extends SubsystemBase {
 
     motorOne.setIdleMode(IdleMode.kCoast);
     motorTwo.setIdleMode(IdleMode.kCoast);
+
 
   }
   /**
@@ -87,7 +89,9 @@ public class Elevator extends SubsystemBase {
 
   public void runElevator(){
     double voltage = 0;
-    voltage = elevatorController.calculate(getElevatorPositionInches(), currentSetpoint.eleveatorExtension);
+    if (Math.abs(currentSetpoint.eleveatorExtension - getElevatorPositionInches()) > 0.25){
+      voltage = elevatorController.calculate(getElevatorPositionInches(), currentSetpoint.eleveatorExtension);
+    }
 
     if (getElevatorPositionInches() < 0.15 && voltage <0){
       voltage = 0;
@@ -95,8 +99,9 @@ public class Elevator extends SubsystemBase {
     else if (getElevatorPositionInches() > 42 && voltage > 0){
       voltage = 0;
     }
-    
-    voltage += elevatorFeedForward.calculate(0);
+
+    voltage += elevatorFeedForward.calculate(voltage);
+    SmartDashboard.putNumber("Elevator Voltage", voltage);
     setVoltage(voltage);
 
   }
@@ -121,7 +126,7 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("Motor 6 Current", motorTwo.getOutputCurrent());
 
     SmartDashboard.putNumber("Elevator Position", getElevatorPositionInches());
-
+    SmartDashboard.putString("Elevator Setpoint", currentSetpoint.name());
   }
 
   @Override
