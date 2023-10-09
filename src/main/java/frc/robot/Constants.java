@@ -37,8 +37,4 @@ public final class Constants {
       this.wristAngle = wristAngle;
     }
   }
-
-  public static enum Setpoints {
-    
-  }
 }

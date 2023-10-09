@@ -24,8 +24,8 @@ public class Elevator extends SubsystemBase {
 
   private final CANSparkMax motorOne = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorOne, MotorType.kBrushless);
   private final CANSparkMax motorTwo = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorTwo, MotorType.kBrushless);
-  private final RelativeEncoder motorOneEncoder = motorOne.getEncoder(); // TODO: check if absolute encoder??
-  private final RelativeEncoder motorTwoEncoder = motorTwo.getEncoder(); // TODO: check if absolute encoder??
+  private final RelativeEncoder motorOneEncoder = motorOne.getEncoder(); 
+  private final RelativeEncoder motorTwoEncoder = motorTwo.getEncoder(); 
 
   private final PIDController elevatorController = new PIDController(0,0,0);
   private final SimpleMotorFeedforward elevatorFeedForward = new SimpleMotorFeedforward(0,0,0);
@@ -46,29 +46,6 @@ public class Elevator extends SubsystemBase {
     motorOne.setIdleMode(IdleMode.kCoast);
     motorTwo.setIdleMode(IdleMode.kCoast);
 
-  }
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public CommandBase exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
   }
 
   public void stop()
