@@ -26,7 +26,7 @@ public final class Constants {
     // Setpoint(ElevatorExtension, WristAngle)
 
     STOW(1, 0),
-    MID_SCORING(32, -120),
+    MID_SCORING(22, -120),
     TOP_SCORING(42, -90);
 
     public double eleveatorExtension;
