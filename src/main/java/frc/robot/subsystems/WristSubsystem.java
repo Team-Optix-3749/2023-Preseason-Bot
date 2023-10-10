@@ -10,10 +10,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class WristSubsystem extends SubsystemBase {
+    
     private final CANSparkMax wristMotor = new CANSparkMax(Constants.Wrist.wristMotor, CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
     private final PIDController wristController = new PIDController(0, 0,0 );
-    private final double ks = 0;
+    private final double ks = 0.5;
 
     private Constants.Setpoints currentSetpoint = Constants.Setpoints.STOW;
     
@@ -25,8 +26,9 @@ public class WristSubsystem extends SubsystemBase {
     // angle is rotation in radians
     public void setWristMotorVoltage() {
 
-        double voltage = wristController.calculate(getWristAngle(), currentSetpoint.wristAngle);
-        voltage += ks * Math.cos(getWristAngle());
+        // double voltage = wristController.calculate(getWristAngle(), currentSetpoint.wristAngle);
+        double voltage = ks * Math.sin(90);
+        SmartDashboard.putNumber("Wrist Voltage", voltage);
         wristMotor.set(voltage);
 
     }
@@ -42,6 +44,6 @@ public class WristSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Encoder Value",getWristAngle());
-        // setWristMotorVoltage();
+        setWristMotorVoltage();
     }
 }
