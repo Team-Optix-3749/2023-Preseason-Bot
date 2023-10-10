@@ -10,19 +10,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public final class Autos {
+// public final class Autos {
 
 
-  public static Command scoreTopTaxi(TankDrive drivetrain){
-    Command command;
+//   public static Command scoreTopTaxi(TankDrive drivetrain){
+//     Command command;
     
     
 
 
 
-    return new PrintCommand("HI");
-  }
+//     return new PrintCommand("HI");
+//   }
+public class Autos extends SequentialCommandGroup {
+    public Autos(TankDrive driveSubsystem) {
+        // Other autonomous actions before the path (if needed)
+        
+        // Create the path-following command using the generated RamseteCommand
+        RamseteCommand ramseteCommand = ...; // Generate this command with PathWeaver
+        
+        addCommands(
+            ramseteCommand
+        );
+    }
+}
   
   /** Example static factory for an autonomous command. */
   // public static CommandBase exampleAuto(ExampleSubsystem subsystem) {
