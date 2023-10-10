@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +27,22 @@ public class TankDrive extends SubsystemBase {
 
   public void Drivetrain() {
     rightMotorControl.setInverted(true);
+
+    frontLeft.setSelectedSensorPosition(0);
+    frontRight.setSelectedSensorPosition(0);
+    backLeft.setSelectedSensorPosition(0);
+    backRight.setSelectedSensorPosition(0);
+
+  }
+
+  public double getLeftDistance()
+  {
+    return (frontLeft.getSelectedSensorPosition() + backLeft.getSelectedSensorPosition())/2/Constants.Drivetrain.wheelConversionFactor;
+  }
+
+  public double getRightDistance()
+  {
+    return (frontRight.getSelectedSensorPosition() + frontRight.getSelectedSensorPosition())/2/Constants.Drivetrain.wheelConversionFactor;
   }
 
   public void arcadeDrive(double speed, double rotation) {

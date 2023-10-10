@@ -25,7 +25,10 @@ public final class Constants {
     public static final int backRightID = 4;
 
     public static final double speedScalar = 2.0/3.0;
+
+    public static final double wheelRadius = .0444; //meters
   
+    public static final double wheelConversionFactor = 2048 * 9.29 / (2*Math.PI*wheelRadius);
   }
 
 }
