@@ -4,12 +4,16 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 
 public class TankDrive extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -22,6 +26,10 @@ public class TankDrive extends SubsystemBase {
 
   private MotorControllerGroup leftMotorControl = new MotorControllerGroup(backLeft, frontLeft);
   private MotorControllerGroup rightMotorControl = new MotorControllerGroup(backRight, frontRight);
+
+  private final Gyro m_gyro = new ADXRS450_Gyro();
+
+  private final DifferentialDriveOdometry m_odometry;
 
   private DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorControl, rightMotorControl);
 
@@ -48,7 +56,9 @@ public class TankDrive extends SubsystemBase {
   public void arcadeDrive(double speed, double rotation) {
     differentialDrive.arcadeDrive(speed, rotation);
   }
-
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
   public void stop() {
     differentialDrive.arcadeDrive(0, 0);
   }
