@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
 
     }
 
-    public void setIntakeVoltage(double velocity) { // get better name
+    public void setIntakeVelocity(double velocity) { // get better name
         this.intakeMotorVelocity = velocity;
     }
     
