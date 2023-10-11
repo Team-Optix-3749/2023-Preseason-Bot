@@ -62,6 +62,11 @@ public class RobotContainer {
   private void configureBindings() {
     // TODO: set appropriate angles for wrist movement
 
+    m_driverController.leftBumper().whileTrue(Commands.runOnce(()->wristSubsystem.moveWrist(1), wristSubsystem));
+    m_driverController.rightBumper().whileTrue(Commands.runOnce(()->wristSubsystem.moveWrist(0), wristSubsystem));
+
+
+
     // m_driverController.a().onTrue(Commands.runOnce(() ->
     // wristSubsystem.setSetpoint(Constants.Setpoints.STOW), wristSubsystem));
     // m_driverController.b().onTrue(Commands.runOnce(() ->
@@ -71,9 +76,7 @@ public class RobotContainer {
     // wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING),
     // wristSubsystem));
 
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
 
     m_driverController.a().onTrue(new ParallelCommandGroup(
             Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.STOW)),

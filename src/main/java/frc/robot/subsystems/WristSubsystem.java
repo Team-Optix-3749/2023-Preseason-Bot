@@ -10,26 +10,36 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class WristSubsystem extends SubsystemBase {
-    
-    private final CANSparkMax wristMotor = new CANSparkMax(Constants.Wrist.wristMotor, CANSparkMax.MotorType.kBrushless);
+
+    private final CANSparkMax wristMotor = new CANSparkMax(Constants.Wrist.wristMotor,
+            CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
-    private final PIDController wristController = new PIDController(0, 0,0 );
-    private final double ks = 0.5;
+    private final PIDController wristController = new PIDController(0, 0, 0);
+    private final double kg = 0.15;
+    private final double ks = 0.35;
 
     private Constants.Setpoints currentSetpoint = Constants.Setpoints.STOW;
-    
+
     public WristSubsystem() {
         wristMotor.restoreFactoryDefaults();
         wristMotor.setSmartCurrentLimit(40);
+        wristMotor.setInverted(true);
     }
 
     // angle is rotation in radians
     public void setWristMotorVoltage() {
+        double voltage = 0;
 
-        // double voltage = wristController.calculate(getWristAngle(), currentSetpoint.wristAngle);
-        double voltage = ks * Math.sin(90);
+        // voltage = wristController.calculate(getWristAngle(),
+        //     currentSetpoint.wristAngle);
+        voltage += ks;
+        if (getWristAngle() > 15) {
+            voltage += kg * Math.sin(getWristAngle());
+        }
+
+        
         SmartDashboard.putNumber("Wrist Voltage", voltage);
-        wristMotor.set(voltage);
+        wristMotor.setVoltage(voltage);
 
     }
 
@@ -38,12 +48,16 @@ public class WristSubsystem extends SubsystemBase {
     }
 
     public double getWristAngle() {
-        return (wristEncoder.getPosition() * 1/15 * 45/56 * 15/32* 360);
+        return -(-10 + wristEncoder.getPosition() * 1 / 15 * 45 / 56 * 15 / 32 * 360);
+    }
+
+    public void moveWrist(double volts) {
+        wristMotor.setVoltage(volts);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Encoder Value",getWristAngle());
+        SmartDashboard.putNumber("Encoder Value", getWristAngle());
         setWristMotorVoltage();
     }
 }

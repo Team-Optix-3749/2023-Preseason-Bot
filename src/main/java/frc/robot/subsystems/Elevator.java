@@ -36,7 +36,7 @@ public class Elevator extends SubsystemBase {
   private final DoubleSupplier wristAngleSupplier;
   // feed forward constants
   private final double ks = 0.3;
-  private final double kg = 0.065;
+  private final double kg = 0.06;
   // extension
   private final double ke = -0.2;
   // private final double cgOutLengthInches = 
@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
     // gear ratio * 1 / circumfrance rotarty bar * 1 / total length elevator
     // motorOneEncoder.setPositionConversionFactor(1/225);
     motorTwoEncoder.setPositionConversionFactor(1 / 225);
-
+ 
     motorOne.setSmartCurrentLimit(60);
     motorTwo.setSmartCurrentLimit(60);
 
@@ -80,8 +80,8 @@ public class Elevator extends SubsystemBase {
   public void runElevator() {
     double voltage = 0;
     if (Math.abs(currentSetpoint.eleveatorExtension - getElevatorPositionInches()) > 0.25) {
-      // voltage = elevatorController.calculate(getElevatorPositionInches(),
-      // currentSetpoint.eleveatorExtension);
+      voltage = elevatorController.calculate(getElevatorPositionInches(),
+        currentSetpoint.eleveatorExtension);
     }
 
     if (getElevatorPositionInches() < 0.15 && voltage < 0) {
