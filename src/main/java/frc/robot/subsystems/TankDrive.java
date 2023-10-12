@@ -29,8 +29,6 @@ public class TankDrive extends SubsystemBase {
 
   private final Gyro m_gyro = new ADXRS450_Gyro();
 
-  private final DifferentialDriveOdometry m_odometry;
-
   private DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorControl, rightMotorControl);
 
   public void Drivetrain() {
@@ -56,9 +54,7 @@ public class TankDrive extends SubsystemBase {
   public void arcadeDrive(double speed, double rotation) {
     differentialDrive.arcadeDrive(speed, rotation);
   }
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
-  }
+
   public void stop() {
     differentialDrive.arcadeDrive(0, 0);
   }

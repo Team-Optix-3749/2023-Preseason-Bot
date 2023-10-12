@@ -25,16 +25,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 //     return new PrintCommand("HI");
 //   }
 public class Autos extends SequentialCommandGroup {
-    public Autos(TankDrive driveSubsystem) {
-        // Other autonomous actions before the path (if needed)
-        
-        // Create the path-following command using the generated RamseteCommand
-        RamseteCommand ramseteCommand = ...; // Generate this command with PathWeaver
-        
-        addCommands(
-            ramseteCommand
-        );
-    }
+
 }
   
   /** Example static factory for an autonomous command. */
