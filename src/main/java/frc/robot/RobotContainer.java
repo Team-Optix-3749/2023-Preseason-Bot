@@ -71,6 +71,13 @@ public class RobotContainer {
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    pilot.povUp().whileTrue(Commands.run(()->intake.setIntakeSpeed(0.5)));
+    pilot.povDown().whileTrue(Commands.run(()->intake.setIntakeSpeed(1)));
+    pilot.povDown().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
+    pilot.povUp().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
+
+
+
     pilot.leftBumper().whileTrue(Commands.run(() -> wristSubsystem.moveWrist(1), wristSubsystem));
     pilot.rightBumper().whileTrue(Commands.run(() -> wristSubsystem.moveWrist(-1), wristSubsystem));
 

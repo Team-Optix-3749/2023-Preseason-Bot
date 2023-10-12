@@ -40,13 +40,13 @@ public class Intake extends SubsystemBase {
         this.intakeMotorVelocity = velocity;
     }
     public void setIntakeSpeed(double speedincrease){
-        speed += speedincrease;
+        intakeMotor.set(speedincrease);
     }
 
     @Override
     public void periodic(){
         intakeMotor.set(speed);
 
-        setIntakeMotorVoltage(intakeMotorVelocity);
+        // setIntakeMotorVoltage(intakeMotorVelocity);
     }
 }
