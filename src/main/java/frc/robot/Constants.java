@@ -17,9 +17,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
 
   public static class Wrist
   {
@@ -59,4 +56,19 @@ public final class Constants {
     public static final int outtakeVelocity = -1;
     public static final int idleVelocity = 0;
   }
+
+  public static class Drivetrain{
+    public static final int frontLeftID = 1;
+    public static final int frontRightID = 3;
+  
+    public static final int backLeftID = 2;
+    public static final int backRightID = 4;
+
+    public static final double speedScalar = 2.0/3.0;
+
+    public static final double wheelRadius = .0444; //meters
+  
+    public static final double wheelConversionFactor = 2048 * 9.29 / (2*Math.PI*wheelRadius);
+  }
+
 }

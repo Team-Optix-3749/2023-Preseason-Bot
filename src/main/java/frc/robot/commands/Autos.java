@@ -16,7 +16,14 @@ public final class Autos {
 
 
 
-  private Autos() {
-    throw new UnsupportedOperationException("This is a utility class!");
-  }
 }
+  
+  /** Example static factory for an autonomous command. */
+  // public static CommandBase exampleAuto(ExampleSubsystem subsystem) {
+  //   return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
+  // }
+
+  // private Autos() {
+  //   throw new UnsupportedOperationException("This is a utility class!");
+  // }
+//}

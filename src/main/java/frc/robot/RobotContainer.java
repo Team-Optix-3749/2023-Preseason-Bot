@@ -1,14 +1,13 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.TankDrive;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -26,12 +25,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final CommandXboxController pilot = new CommandXboxController(0);
+  private final CommandXboxController operator = new CommandXboxController(1);
+
   private final WristSubsystem wristSubsystem = new WristSubsystem();
   private final Intake intake = new Intake();  
   private final Elevator Elevator = new Elevator(() -> wristSubsystem.getWristAngle());
+  private final TankDrive drivetrain = new TankDrive();
+  private final Drive driveCommand = new Drive(drivetrain, pilot::getLeftY, pilot::getRightX);
 
-  private final CommandXboxController m_driverController = new CommandXboxController(
-      OperatorConstants.kDriverControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -59,44 +61,44 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // TODO: set appropriate angles for wrist movement
-    m_driverController.rightTrigger().onTrue(Commands.run(()->intake.setIntakeVelocity(Constants.Intake.intakeVelocity)));
-    m_driverController.leftTrigger().onTrue(Commands.run(()->intake.setIntakeVelocity(Constants.Intake.outtakeVelocity)));
-    m_driverController.leftTrigger().onFalse(Commands.runOnce(()->intake.setIntakeVelocity(Constants.Intake.idleVelocity)));
-    m_driverController.rightTrigger().onFalse(Commands.runOnce(()->intake.setIntakeVelocity(Constants.Intake.idleVelocity)));
+    pilot.rightTrigger().onTrue(Commands.run(()->intake.setIntakeVelocity(Constants.Intake.intakeVelocity)));
+    pilot.leftTrigger().onTrue(Commands.run(()->intake.setIntakeVelocity(Constants.Intake.outtakeVelocity)));
+    pilot.leftTrigger().onFalse(Commands.runOnce(()->intake.setIntakeVelocity(Constants.Intake.idleVelocity)));
+    pilot.rightTrigger().onFalse(Commands.runOnce(()->intake.setIntakeVelocity(Constants.Intake.idleVelocity)));
 
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
 
-    m_driverController.leftBumper().whileTrue(Commands.runOnce(()->wristSubsystem.moveWrist(1), wristSubsystem));
-    m_driverController.rightBumper().whileTrue(Commands.runOnce(()->wristSubsystem.moveWrist(0), wristSubsystem));
+    pilot.leftBumper().whileTrue(Commands.runOnce(()->wristSubsystem.moveWrist(1), wristSubsystem));
+    pilot.rightBumper().whileTrue(Commands.runOnce(()->wristSubsystem.moveWrist(0), wristSubsystem));
 
 
 
-    // m_driverController.a().onTrue(Commands.runOnce(() ->
+    // pilot.a().onTrue(Commands.runOnce(() ->
     // wristSubsystem.setSetpoint(Constants.Setpoints.STOW), wristSubsystem));
-    // m_driverController.b().onTrue(Commands.runOnce(() ->
+    // pilot.b().onTrue(Commands.runOnce(() ->
     // wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING),
     // wristSubsystem));
-    // m_driverController.x().onTrue(Commands.runOnce(() ->
+    // pilot.x().onTrue(Commands.runOnce(() ->
     // wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING),
     // wristSubsystem));
 
 
-
-    m_driverController.a().onTrue(new ParallelCommandGroup(
+    
+    pilot.a().onTrue(new ParallelCommandGroup(
             Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.STOW)),
             Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW))));
 
-   // m_driverController.b().onTrue(Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.MID_SCORING)));
-   // m_driverController.x().onTrue(Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)));
+   // pilot.b().onTrue(Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.MID_SCORING)));
+   // pilot.x().onTrue(Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)));
 
-    m_driverController.b().onTrue(new ParallelCommandGroup(
+    pilot.b().onTrue(new ParallelCommandGroup(
       Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.MID_SCORING)),
       Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING))
     ));
 
-    m_driverController.x().onTrue(new ParallelCommandGroup(
+    pilot.x().onTrue(new ParallelCommandGroup(
       Commands.runOnce(() -> Elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)),
       Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING))
     ));
@@ -117,3 +119,4 @@ public class RobotContainer {
     return (new PrintCommand("Test"));
   }
 }
+ 
