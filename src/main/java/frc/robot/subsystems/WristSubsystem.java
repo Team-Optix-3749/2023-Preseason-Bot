@@ -16,7 +16,7 @@ public class WristSubsystem extends SubsystemBase {
     private final CANSparkMax wristMotor = new CANSparkMax(Constants.Wrist.wristMotor,
             CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
-    private final PIDController wristController = new PIDController(0.08, 0, 0); // 0.1
+    private final PIDController wristController = new PIDController(0.10, 0, 0); // 0.1
     private final double kg = 0.55;
     private final double ks = 0.1;
 
@@ -69,11 +69,15 @@ public class WristSubsystem extends SubsystemBase {
     }
 
     public void setSetpoint(Constants.Setpoints setpoint) {
-        if (elevatorPositionSupplier.getAsDouble() * Math.sin(2 / 3 * Math.PI) + 7
-        + Math.cos(setpointOnHold.wristAngle / 180 * Math.PI) * 19.5 > 0) {
-            // currentSetpoint = setpoint;
-        }
         setpointOnHold = setpoint;
+        double wristRoom = elevatorPositionSupplier.getAsDouble() * Math.sin(1.0 / 3.0 * Math.PI) + 4
+                + Math.cos(setpointOnHold.wristAngle / 180.0 * Math.PI) * 19.5;
+        if (wristRoom > 0) {
+            currentSetpoint = setpoint;
+
+        }
+        SmartDashboard.putBoolean("in setSetpoint",
+                wristRoom > 0);
     }
 
     public double getWristAngle() {
@@ -84,7 +88,7 @@ public class WristSubsystem extends SubsystemBase {
 
         if (getWristAngle() > 10.5) {
             volts += ks;
-            volts += kg * Math.abs(Math.sin(getWristAngle() * Math.PI / 180));
+            volts += kg * Math.abs(Math.sin(getWristAngle() * Math.PI / 180.0));
         }
 
         else if (volts > 0) {
@@ -95,16 +99,23 @@ public class WristSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (elevatorPositionSupplier.getAsDouble() * Math.sin(2 / 3 * Math.PI) + 7
-                + Math.cos(setpointOnHold.wristAngle / 180 * Math.PI) * 19.5 > 0) {
-            // currentSetpoint = setpointOnHold;
+        double wristRoom = elevatorPositionSupplier.getAsDouble() * Math.sin(1.0 / 3.0 * Math.PI) + 4
+                + Math.cos(setpointOnHold.wristAngle / 180.0 * Math.PI) * 19.5;
+
+        if (wristRoom > 0) {
+            currentSetpoint = setpointOnHold;
         }
+        SmartDashboard.putBoolean("in periodic",
+                wristRoom > 0);
         SmartDashboard.putNumber("Wrist Angle", getWristAngle());
         SmartDashboard.putString("WristSetpoint", currentSetpoint.name());
         SmartDashboard.putString("WristSetpointOnHold", setpointOnHold.name());
-        SmartDashboard.putNumber("Wrist Room", elevatorPositionSupplier.getAsDouble() * Math.sin(2 / 3 * Math.PI) + 7
-        + Math.cos(setpointOnHold.wristAngle / 180 * Math.PI) * 19.5);
+        SmartDashboard.putNumber("Wrist Room", wristRoom);
+        SmartDashboard.putNumber("elevator hieght",
+                elevatorPositionSupplier.getAsDouble() * Math.sin(1.0 / 3.0 * Math.PI) + 4);
 
+        SmartDashboard.putNumber("wrist hieght", Math.cos(setpointOnHold.wristAngle / 180.0 * Math.PI) * 19.5);
+        SmartDashboard.putNumber("elevator value from wrist", elevatorPositionSupplier.getAsDouble());
         setWristMotorVoltage();
     }
 }

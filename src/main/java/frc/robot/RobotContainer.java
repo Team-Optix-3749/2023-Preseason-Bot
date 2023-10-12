@@ -92,7 +92,7 @@ public class RobotContainer {
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING))));
 
-    pilot.y().onTrue(new SequentialCommandGroup(
+    pilot.x().onTrue(new SequentialCommandGroup(
           Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.GROUND_INTAKE)),
           Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.GROUND_INTAKE))));
   
