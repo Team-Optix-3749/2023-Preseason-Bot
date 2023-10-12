@@ -32,8 +32,8 @@ public class WristSubsystem extends SubsystemBase {
 
         // voltage = wristController.calculate(getWristAngle(),
         //     currentSetpoint.wristAngle);
-        voltage += ks;
-        if (getWristAngle() > 15) {
+        if (getWristAngle() > 11.5) {
+            voltage += ks;
             voltage += kg * Math.sin(getWristAngle());
         }
 
