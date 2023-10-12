@@ -31,7 +31,7 @@ public class Elevator extends SubsystemBase {
   private final RelativeEncoder motorOneEncoder = motorOne.getEncoder();
   private final RelativeEncoder motorTwoEncoder = motorTwo.getEncoder();
 
-  private final PIDController elevatorController = new PIDController(0.3, 0, 0);
+  private final PIDController elevatorController = new PIDController(0.55, 0, 0);
 
   private final DoubleSupplier wristAngleSupplier;
   // feed forward constants
@@ -39,13 +39,12 @@ public class Elevator extends SubsystemBase {
   private final double kg = 0.06;
   // extension
   private final double ke = -0.2;
-  // private final double cgOutLengthInches = 
+  // private final double cgOutLengthInches =
   // wrist rotation
   private final double kr = -.1;
 
-
-
   private Constants.Setpoints currentSetpoint = Constants.Setpoints.STOW;
+  private Constants.Setpoints setpointOnHold = Constants.Setpoints.STOW;
 
   public Elevator(DoubleSupplier wristAngleSupplier) {
 
@@ -55,13 +54,12 @@ public class Elevator extends SubsystemBase {
     // gear ratio * 1 / circumfrance rotarty bar * 1 / total length elevator
     // motorOneEncoder.setPositionConversionFactor(1/225);
     motorTwoEncoder.setPositionConversionFactor(1 / 225);
- 
-    motorOne.setSmartCurrentLimit(60);
-    motorTwo.setSmartCurrentLimit(60);
+
+    motorOne.setSmartCurrentLimit(40);
+    motorTwo.setSmartCurrentLimit(40);
 
     motorOne.setIdleMode(IdleMode.kCoast);
     motorTwo.setIdleMode(IdleMode.kCoast);
-
   }
 
   public void stop() {
@@ -81,7 +79,15 @@ public class Elevator extends SubsystemBase {
     double voltage = 0;
     if (Math.abs(currentSetpoint.eleveatorExtension - getElevatorPositionInches()) > 0.25) {
       voltage = elevatorController.calculate(getElevatorPositionInches(),
-        currentSetpoint.eleveatorExtension);
+          currentSetpoint.eleveatorExtension);
+
+      double maxVoltage = 1;
+      if (voltage > maxVoltage) {
+        voltage = maxVoltage;
+      }
+      if (voltage < -maxVoltage) {
+        voltage = -maxVoltage;
+      }
     }
 
     if (getElevatorPositionInches() < 0.15 && voltage < 0) {
@@ -103,27 +109,33 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setSetpoint(Constants.Setpoints setpoint) {
-    currentSetpoint = setpoint;
+    if (wristAngleSupplier.getAsDouble() < 90) {
+      currentSetpoint = setpoint;
+    }
+    setpointOnHold = setpoint;
   }
 
-  public double ffcalculate(double velocity){
+  public double ffcalculate(double velocity) {
     double total = 0;
     total += ks * Math.signum(velocity);
     total += kg;
-    total += kr * Math.sin(wristAngleSupplier.getAsDouble()/180 * Math.PI);
+    total += kr * Math.sin(wristAngleSupplier.getAsDouble() / 180 * Math.PI);
 
     // BS center of mass constant forcespring torque crap
-    if (getElevatorPositionInches()>4 && getElevatorPositionInches()<10){
-      total+=ke;
+    if (getElevatorPositionInches() > 4 && getElevatorPositionInches() < 10) {
+      total += ke;
     }
-    if (getElevatorPositionInches()>10 ){
-      total+=ke/2;
+    if (getElevatorPositionInches() > 10) {
+      total += ke / 2;
     }
     return total;
   }
 
   @Override
   public void periodic() {
+    if (wristAngleSupplier.getAsDouble() < 95) {
+      currentSetpoint = setpointOnHold;
+    }
     runElevator();
 
     SmartDashboard.putNumber("Motor 5 Bus Voltage", motorOne.getBusVoltage());

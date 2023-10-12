@@ -32,9 +32,10 @@ public final class Constants {
   public static enum Setpoints {
     // Setpoint(ElevatorExtension, WristAngle)
 
-    STOW(1, 0),
-    MID_SCORING(32, 120),
-    TOP_SCORING(42, 90);
+    STOW(1, 15),
+    MID_SCORING(32, 90),
+    TOP_SCORING(42, 90),
+    GROUND_INTAKE(23,150);
 
     public double eleveatorExtension;
     public double wristAngle;

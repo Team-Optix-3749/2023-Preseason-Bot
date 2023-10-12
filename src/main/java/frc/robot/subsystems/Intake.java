@@ -15,6 +15,7 @@ public class Intake extends SubsystemBase {
     private final SimpleMotorFeedforward intakeFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
     private double intakeMotorVelocity = Constants.Intake.idleVelocity;
+    double speed = 0;
     
     public Intake() {
         intakeMotor.restoreFactoryDefaults();
@@ -38,9 +39,14 @@ public class Intake extends SubsystemBase {
     public void setIntakeVelocity(double velocity) { // get better name
         this.intakeMotorVelocity = velocity;
     }
-    
+    public void setIntakeSpeed(double speedincrease){
+        speed += speedincrease;
+    }
+
     @Override
     public void periodic(){
+        intakeMotor.set(speed);
+
         setIntakeMotorVoltage(intakeMotorVelocity);
     }
 }
