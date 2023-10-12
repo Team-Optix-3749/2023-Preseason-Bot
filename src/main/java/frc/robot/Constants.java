@@ -52,4 +52,11 @@ public final class Constants {
     public static final int claw_motor_id = 8;
   }
 
+
+  public static class Intake {
+    public static final int intakeMotor = 8;
+    public static final int intakeVelocity = 1;
+    public static final int outtakeVelocity = -1;
+    public static final int idleVelocity = 0;
+  }
 }
