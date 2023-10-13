@@ -32,7 +32,7 @@ public class Drive extends CommandBase {
         SmartDashboard.putNumber("Y", y.getAsDouble());
         SmartDashboard.putNumber("X", x.getAsDouble());
 
-        drive.arcadeDrive( x.getAsDouble()*Constants.Drivetrain.speedScalar, -y.getAsDouble() * Constants.Drivetrain.speedScalar);
+        drive.arcadeDrive( -x.getAsDouble()*Constants.Drivetrain.speedScalar, -y.getAsDouble() * Constants.Drivetrain.speedScalar);
     }
 
     @Override

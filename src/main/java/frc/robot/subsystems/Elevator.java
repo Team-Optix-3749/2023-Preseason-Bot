@@ -81,8 +81,9 @@ public class Elevator extends SubsystemBase {
       voltage = elevatorController.calculate(getElevatorPositionInches(),
           currentSetpoint.eleveatorExtension);
 
-      double maxVoltage = 1;
+      double maxVoltage = 6;
       if (voltage > maxVoltage) {
+        
         voltage = maxVoltage;
       }
       if (voltage < -maxVoltage) {

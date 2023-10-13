@@ -35,7 +35,7 @@ public final class Constants {
     STOW(1, 15),
     MID_SCORING(32, 90),
     TOP_SCORING(42, 90),
-    GROUND_INTAKE(23,150);
+    GROUND_INTAKE(16,135);
 
     public double eleveatorExtension;
     public double wristAngle;
@@ -65,7 +65,7 @@ public final class Constants {
     public static final int backLeftID = 2;
     public static final int backRightID = 4;
 
-    public static final double speedScalar = 2.0/3.0;
+    public static final double speedScalar = 1;
 
     public static final double wheelRadius = .0444; //meters
   

@@ -71,10 +71,10 @@ public class RobotContainer {
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    pilot.povUp().whileTrue(Commands.run(()->intake.setIntakeSpeed(0.5)));
-    pilot.povDown().whileTrue(Commands.run(()->intake.setIntakeSpeed(1)));
-    pilot.povDown().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
-    pilot.povUp().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
+    pilot.leftTrigger().whileTrue(Commands.run(()->intake.setIntakeSpeed(-0.3)));
+    pilot.rightTrigger().whileTrue(Commands.run(()->intake.setIntakeSpeed(0.3)));
+    pilot.leftTrigger().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
+    pilot.rightTrigger().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
 
 
 
