@@ -33,9 +33,9 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Elevator elevator = new Elevator(() -> wristSubsystem.getWristAngle());
   private final TankDrive drivetrain = new TankDrive();
-  private final Drive driveCommand = new Drive(drivetrain, pilot::getLeftY, pilot::getRightX);
+  private final Drive driveCommand = new Drive(drivetrain, operator::getLeftY, operator::getRightX);
 
-  /**
+  /** 
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
 
@@ -64,44 +64,48 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // TODO: set appropriate angles for wrist movement
-    pilot.rightTrigger().onTrue(Commands.run(() -> intake.setIntakeVelocity(Constants.Intake.intakeVelocity)));
-    pilot.leftTrigger().onTrue(Commands.run(() -> intake.setIntakeVelocity(Constants.Intake.outtakeVelocity)));
-    pilot.leftTrigger().onFalse(Commands.runOnce(() -> intake.setIntakeVelocity(Constants.Intake.idleVelocity)));
-    pilot.rightTrigger().onFalse(Commands.runOnce(() -> intake.setIntakeVelocity(Constants.Intake.idleVelocity)));
+    operator.leftTrigger().onTrue(Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.intakeVoltage)));
+    operator.rightTrigger().onTrue(Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.outtakeVoltage)));
+    operator.leftTrigger().onFalse(Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.idleVoltage)));
+    operator.rightTrigger().onFalse(Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.idleVoltage)));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    pilot.leftTrigger().whileTrue(Commands.run(()->intake.setIntakeSpeed(-0.2)));
-    pilot.rightTrigger().whileTrue(Commands.run(()->intake.setIntakeSpeed(0.2)));
-    pilot.leftTrigger().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
-    pilot.rightTrigger().onFalse(Commands.runOnce(()->intake.setIntakeSpeed(-0)));
+    operator.povLeft().onTrue(Commands.runOnce(() -> wristSubsystem.changeWristOffset(-1)));
+    operator.povRight().onTrue(Commands.runOnce(() -> wristSubsystem.changeWristOffset(1)));
+    operator.povUp().whileTrue(Commands.run(() -> wristSubsystem.setVoltage(-1)));
 
 
-
-    pilot.leftBumper().whileTrue(Commands.run(() -> wristSubsystem.moveWrist(1), wristSubsystem));
-    pilot.rightBumper().whileTrue(Commands.run(() -> wristSubsystem.moveWrist(-1), wristSubsystem));
-
-    // pilot.a().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW), wristSubsystem));
-    // pilot.b().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING),
+    // operator.a().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW), wristSubsystem));
+    // operator.b().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING),
     //     wristSubsystem));
-    // pilot.x().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING),
+    // operator.x().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING),
     //     wristSubsystem));
 
-    pilot.a().onTrue(new ParallelCommandGroup(
+    operator.a().onTrue(new ParallelCommandGroup(
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.STOW)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW))));
 
-    pilot.b().onTrue(new ParallelCommandGroup(
+    operator.b().onTrue(new ParallelCommandGroup(
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.MID_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING))));
 
-    pilot.y().onTrue(new ParallelCommandGroup(
+    operator.y().onTrue(new ParallelCommandGroup(
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING))));
 
-    pilot.x().onTrue(new SequentialCommandGroup(
+    operator.x().onTrue(new SequentialCommandGroup(
           Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.GROUND_INTAKE)),
           Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.GROUND_INTAKE))));
+
+    operator.leftBumper().onTrue(new SequentialCommandGroup(
+      Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE)),
+      Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE))));
+    
+    operator.rightBumper().onTrue(new SequentialCommandGroup(
+      Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION)),
+      Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION))));
+    
   
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
@@ -118,6 +122,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return (new PrintCommand("Test"));
+    return Autos.scoreTopTaxi(elevator, wristSubsystem, intake, drivetrain);
   }
 }

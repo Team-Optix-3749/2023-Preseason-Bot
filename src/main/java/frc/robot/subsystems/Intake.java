@@ -11,10 +11,8 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
     private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Intake.intakeMotor, CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
-    private final PIDController intakeController = new PIDController(0, 0, 0);
-    private final SimpleMotorFeedforward intakeFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
-    private double intakeMotorVelocity = Constants.Intake.idleVelocity;
+    private double intakeMotorVoltage = Constants.Intake.idleVoltage;
     double speed = 0;
     
     public Intake() {
@@ -28,25 +26,17 @@ public class Intake extends SubsystemBase {
         intakeMotor.setSmartCurrentLimit(40);
     }
 
-    public void setIntakeMotorVoltage(double velocity) {
-
-        double voltage = intakeController.calculate(intakeEncoder.getVelocity(), velocity);
-        voltage += intakeFeedforward.calculate(velocity);
-        intakeMotor.setVoltage(voltage);
-
-    }
 
     public void setIntakeVelocity(double velocity) { // get better name
-        this.intakeMotorVelocity = velocity;
+        this.intakeMotorVoltage = velocity;
     }
-    public void setIntakeSpeed(double speedincrease){
-        intakeMotor.set(speedincrease);
+    public void setIntakeVoltage(double volts){
+        intakeMotorVoltage = volts;
     }
 
     @Override
     public void periodic(){
-        intakeMotor.set(speed);
-
+        intakeMotor.setVoltage(intakeMotorVoltage);
         // setIntakeMotorVoltage(intakeMotorVelocity);
     }
 }

@@ -52,7 +52,7 @@ public class TankDrive extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    differentialDrive.arcadeDrive(speed, rotation);
+    differentialDrive.arcadeDrive(0.75 * speed, rotation);
   }
 
   public void stop() {

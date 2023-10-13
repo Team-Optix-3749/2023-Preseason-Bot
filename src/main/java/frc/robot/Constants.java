@@ -32,11 +32,12 @@ public final class Constants {
   public static enum Setpoints {
     // Setpoint(ElevatorExtension, WristAngle)
 
-    STOW(1, 15),
-    MID_SCORING(32, 90),
-    TOP_SCORING(42, 90),
-    GROUND_INTAKE(16,135);
-
+    STOW(1, 17),
+    MID_SCORING(34.75, 85),
+    TOP_SCORING(43, 73),
+    GROUND_INTAKE(21,135),
+    SUPER_GROUND_INTAKE(1, 102),
+    DOUBLE_SUBSTATION(40, 95);
     public double eleveatorExtension;
     public double wristAngle;
 
@@ -53,9 +54,11 @@ public final class Constants {
 
   public static class Intake {
     public static final int intakeMotor = 8;
-    public static final int intakeVelocity = 1;
-    public static final int outtakeVelocity = -1;
-    public static final int idleVelocity = 0;
+    public static final double intakeVoltage = -2.25;
+    public static final double outtakeVoltage = 5.5;
+    public static final double idleVoltage = -.7;
+    // public static final double idleVoltage = -0;
+
   }
 
   public static class Drivetrain{
