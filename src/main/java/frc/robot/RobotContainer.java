@@ -33,7 +33,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Elevator elevator = new Elevator(() -> wristSubsystem.getWristAngle());
   private final TankDrive drivetrain = new TankDrive();
-  private final Drive driveCommand = new Drive(drivetrain, operator::getLeftY, operator::getRightX);
+  private final Drive driveCommand = new Drive(drivetrain, pilot::getLeftY, pilot::getRightX);
 
   /** 
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -83,10 +83,10 @@ public class RobotContainer {
     //     wristSubsystem));
 
     operator.a().onTrue(new ParallelCommandGroup(
-        Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.STOW)),
-        Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW))));
+        Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE)),
+        Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE))));
 
-    operator.b().onTrue(new ParallelCommandGroup(
+    operator.x().onTrue(new ParallelCommandGroup(
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.MID_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING))));
 
@@ -94,13 +94,13 @@ public class RobotContainer {
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING))));
 
-    operator.x().onTrue(new SequentialCommandGroup(
-          Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.GROUND_INTAKE)),
-          Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.GROUND_INTAKE))));
+    operator.b().onTrue(new SequentialCommandGroup(
+          Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.STOW)),
+          Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW))));
 
     operator.leftBumper().onTrue(new SequentialCommandGroup(
-      Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE)),
-      Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE))));
+      Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION)),
+      Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION))));
     
     operator.rightBumper().onTrue(new SequentialCommandGroup(
       Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION)),

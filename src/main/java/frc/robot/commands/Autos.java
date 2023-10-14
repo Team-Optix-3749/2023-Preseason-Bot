@@ -36,7 +36,7 @@ public final class Autos {
     Command runIntake = new SequentialCommandGroup(
       new WaitCommand(4),
       Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.outtakeVoltage-1)), 
-      new WaitCommand(1),
+      new WaitCommand(2),
       Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.idleVoltage)));
 
     Command goDown = new ParallelCommandGroup(
