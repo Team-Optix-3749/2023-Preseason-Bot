@@ -82,11 +82,11 @@ public class RobotContainer {
     // operator.x().onTrue(Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING),
     //     wristSubsystem));
 
-    operator.a().onTrue(new ParallelCommandGroup(
+    operator.b().onTrue(new ParallelCommandGroup(
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.STOW)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.STOW))));
 
-    operator.b().onTrue(new ParallelCommandGroup(
+    operator.x().onTrue(new ParallelCommandGroup(
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.MID_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.MID_SCORING))));
 
@@ -94,13 +94,13 @@ public class RobotContainer {
         Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)),
         Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.TOP_SCORING))));
 
-    operator.x().onTrue(new SequentialCommandGroup(
-          Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.GROUND_INTAKE)),
-          Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.GROUND_INTAKE))));
+    operator.a().onTrue(new SequentialCommandGroup(
+          Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE)),
+          Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE))));
 
     operator.leftBumper().onTrue(new SequentialCommandGroup(
-      Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE)),
-      Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.SUPER_GROUND_INTAKE))));
+      Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION)),
+      Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION))));
     
     operator.rightBumper().onTrue(new SequentialCommandGroup(
       Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION)),
