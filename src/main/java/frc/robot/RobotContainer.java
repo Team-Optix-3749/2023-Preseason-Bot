@@ -33,7 +33,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Elevator elevator = new Elevator(() -> wristSubsystem.getWristAngle());
   private final TankDrive drivetrain = new TankDrive();
-  private final Drive driveCommand = new Drive(drivetrain, operator::getLeftY, operator::getRightX);
+  private final Drive driveCommand = new Drive(drivetrain, pilot::getLeftY, pilot::getRightX);
 
   /** 
    * The container for the robot. Contains subsystems, OI devices, and commands.
