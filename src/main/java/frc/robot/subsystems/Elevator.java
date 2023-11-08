@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Setpoints;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -110,9 +111,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setSetpoint(Constants.Setpoints setpoint) {
-    if (wristAngleSupplier.getAsDouble() < 90) {
-      currentSetpoint = setpoint;
-    }
+    currentSetpoint = setpoint;
     setpointOnHold = setpoint;
   }
 

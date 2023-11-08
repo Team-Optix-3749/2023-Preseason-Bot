@@ -106,6 +106,7 @@ public class RobotContainer {
       Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION)),
       Commands.runOnce(() -> wristSubsystem.setSetpoint(Constants.Setpoints.DOUBLE_SUBSTATION))));
     
+    pilot.a().onTrue(Commands.runOnce(() -> drivetrain.flipBraked()));
   
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,

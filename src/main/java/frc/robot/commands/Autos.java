@@ -21,11 +21,11 @@ public final class Autos {
   /** Example static factory for an autonomous command. */
   private static Command driveBackwardSeconds(TankDrive drivetrain, double seconds) {
 
-    return new Drive(drivetrain, () -> 0.5, () -> 0).withTimeout(1);
+    return new Drive(drivetrain, () -> 1, () -> 0).withTimeout(1.5);
   }
 
   public static Command taxi(TankDrive drivetrain){
-    return driveBackwardSeconds(drivetrain, 4.5);
+    return driveBackwardSeconds(drivetrain, 8);
   }
 
   public static Command scoreTop(Elevator elevator, WristSubsystem wrist, Intake intake){
@@ -33,7 +33,7 @@ public final class Autos {
     Command goUp = new ParallelCommandGroup(
       Commands.runOnce(() -> elevator.setSetpoint(Constants.Setpoints.TOP_SCORING)),
       Commands.runOnce(() -> wrist.setSetpoint(Constants.Setpoints.TOP_SCORING)));
-    Command runIntake = new SequentialCommandGroup(
+    Command runIntake = new SequentialCommandGroup(5
       new WaitCommand(4),
       Commands.runOnce(() -> intake.setIntakeVoltage(Constants.Intake.outtakeVoltage-1)), 
       new WaitCommand(2),

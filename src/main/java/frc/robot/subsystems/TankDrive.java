@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 
@@ -31,14 +35,45 @@ public class TankDrive extends SubsystemBase {
 
   private DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorControl, rightMotorControl);
 
+  private boolean isBreaked = true;
+
   public void Drivetrain() {
     rightMotorControl.setInverted(true);
+
+    frontLeft.configSupplyCurrentLimit( new SupplyCurrentLimitConfiguration(true, 40, 40, 2));
+    frontRight.configSupplyCurrentLimit( new SupplyCurrentLimitConfiguration(true, 40, 40, 2));
+    backRight.configSupplyCurrentLimit( new SupplyCurrentLimitConfiguration(true, 40, 40, 2));
+
+    backLeft.configSupplyCurrentLimit( new SupplyCurrentLimitConfiguration(true, 40, 40, 2));
+
+
 
     frontLeft.setSelectedSensorPosition(0);
     frontRight.setSelectedSensorPosition(0);
     backLeft.setSelectedSensorPosition(0);
     backRight.setSelectedSensorPosition(0);
 
+    frontLeft.setNeutralMode(NeutralMode.Brake);
+    frontRight.setNeutralMode(NeutralMode.Brake);
+    backLeft.setNeutralMode(NeutralMode.Brake);
+    backRight.setNeutralMode(NeutralMode.Brake);
+
+  }
+
+  public void flipBraked() {
+    if (!isBreaked) {
+      frontLeft.setNeutralMode(NeutralMode.Brake);
+      frontRight.setNeutralMode(NeutralMode.Brake);
+      backLeft.setNeutralMode(NeutralMode.Brake);
+      backRight.setNeutralMode(NeutralMode.Brake);
+    } else {
+      frontLeft.setNeutralMode(NeutralMode.Coast);
+      frontRight.setNeutralMode(NeutralMode.Coast);
+      backLeft.setNeutralMode(NeutralMode.Coast);
+      backRight.setNeutralMode(NeutralMode.Coast);
+    }
+
+    isBreaked = !isBreaked;
   }
 
   public double getLeftDistance()
@@ -52,7 +87,8 @@ public class TankDrive extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    differentialDrive.arcadeDrive(0.75 * speed, rotation);
+    differentialDrive.arcadeDrive(0.7 * speed, rotation);
+    // differentialDrive.arcadeDrive(0.75 * speed * speed * Math.signum(speed), rotation * rotation * Math.signum(rotation));
   }
 
   public void stop() {

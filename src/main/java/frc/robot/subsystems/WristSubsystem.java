@@ -17,7 +17,7 @@ public class WristSubsystem extends SubsystemBase {
     private final CANSparkMax wristMotor = new CANSparkMax(Constants.Wrist.wristMotor,
             CANSparkMax.MotorType.kBrushless);
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
-    private final PIDController wristController = new PIDController(0.10, 0, 0); // 0.1
+    private final PIDController wristController = new PIDController(0.125, 0, 0); // 0.1
     private final double kg = 0.55;
     private final double ks = 0.1;
 

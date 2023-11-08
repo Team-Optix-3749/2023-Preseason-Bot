@@ -34,9 +34,9 @@ public final class Constants {
 
     STOW(1, 17),
     MID_SCORING(34.75, 85),
-    TOP_SCORING(43, 73),
-    GROUND_INTAKE(21,135),
-    SUPER_GROUND_INTAKE(1, 102),
+    GROUND_INTAKE(21,40),
+    TOP_SCORING(43, 70),
+    SUPER_GROUND_INTAKE(1, 85),
     DOUBLE_SUBSTATION(40, 95);
     public double eleveatorExtension;
     public double wristAngle;
